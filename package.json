@@ -20,5 +20,10 @@
     "gulp-strip-comments": "^2.5.2",
     "gulp-terser": "^2.1.0",
     "sass": "^1.52.3"
-  }
+  },
+  "browserslist": [
+    "last 2 version",
+    "> 0.5%",
+    "IE 10"
+  ]
 }

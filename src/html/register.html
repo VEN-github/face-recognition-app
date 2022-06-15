@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- general meta tags -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- for responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- for seo -->
+    <meta
+      name="keywords"
+      content="face recognition app, qr code scanner, qr code generator"
+    />
+    <meta name="title" content="Face Recognition App" />
+    <meta
+      name="description"
+      content="Simple face recognition application with QR code generator and scanner."
+    />
+    <meta name="author" content="Raven Barrogo" />
+    <!-- Standard favicon -->
+    <link
+      rel="shortcut icon"
+      href="assets/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <!-- Recommended favicon format -->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/png" />
+    <!-- css -->
+    <link rel="stylesheet" href="assets/css/main.min.css" />
+    <title>Face Recognition App</title>
+  </head>
+  <body>
+    <main>
+      <img
+        class="logo mx-auto mb-2"
+        src="assets/img/logo.svg"
+        alt="Logo of the Application"
+      />
+      <ul class="progress-bar mb-2">
+        <li class="active">Information</li>
+        <li>Identity</li>
+        <li>Confirmation</li>
+      </ul>
+      <div class="card">
+        <div class="card-title">The adventure begins here</div>
+        <div class="card-subtitle mb-2">Enter your personal information</div>
+        <div class="card-body">
+          <form>
+            <div class="input-group">
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder=" "
+                class="form-control"
+              />
+              <label for="" class="form-label">First Name</label>
+            </div>
+            <div class="input-group">
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control"
+                placeholder=" "
+              />
+              <label for="" class="form-label">Last Name</label>
+            </div>
+            <div class="input-group">
+              <input
+                type="email"
+                name=""
+                id=""
+                class="form-control"
+                placeholder=" "
+              />
+              <label for="" class="form-label">Email Address</label>
+            </div>
+            <button type="submit" class="btn btn-primary mb-1">
+              Proceed to Identity
+            </button>
+          </form>
+          <p class="card-info">
+            Already registered?
+            <span><a href="index.html">Sign in</a></span>
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Identity Verification</div>
+        <div class="card-subtitle mb-2">Please take a photo</div>
+        <div class="card-body">
+          <div>
+            <button type="button" class="btn btn-primary mb-1">
+              Take a Photo
+            </button>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline-primary mb-1">
+              Back to Information
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Confirmation</div>
+        <div class="card-subtitle mb-2">
+          Make sure your details are accurate
+        </div>
+        <div class="card-body">
+          <form>
+            <img class="avatar mb-1" src="assets/img/sample.jpg" alt="" />
+            <div class="input-group">
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control"
+                placeholder=" "
+              />
+              <label for="" class="form-label">First Name</label>
+            </div>
+            <div class="input-group">
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control"
+                placeholder=" "
+              />
+              <label for="" class="form-label">Last Name</label>
+            </div>
+            <div class="input-group">
+              <input
+                type="email"
+                name=""
+                id=""
+                class="form-control"
+                placeholder=" "
+              />
+              <label for="" class="form-label">Email Address</label>
+            </div>
+            <button type="submit" class="btn btn-primary mb-1">Submit</button>
+            <button type="button" class="btn btn-outline-primary mb-1">
+              Back to Identity
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

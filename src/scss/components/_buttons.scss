@@ -1,0 +1,32 @@
+@use "../abstracts/variables" as var;
+@use "../base/typography" as fonts;
+
+.btn {
+  font: inherit;
+  background: none;
+  color: inherit;
+  border: none;
+  outline: none;
+
+  &-primary {
+    width: 100%;
+    padding: 0.5em 1em;
+    font-size: clamp(0.75rem, 4vw, 1rem);
+    font-weight: map-get(fonts.$font-weight, regular);
+    background-color: var.$primary-color;
+    color: var.$text-color-light;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  &-outline-primary {
+    width: 100%;
+    padding: 0.5em 1em;
+    font-size: clamp(0.75rem, 4vw, 1rem);
+    font-weight: map-get(fonts.$font-weight, regular);
+    border: 1px solid var.$primary-color;
+    color: var.$primary-color;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}

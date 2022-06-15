@@ -1,0 +1,77 @@
+@use "../abstracts/variables" as var;
+@use "../base/typography" as fonts;
+
+.card {
+  position: relative;
+  overflow: hidden;
+  height: fit-content;
+  padding: 2rem;
+  background-color: var.$card-color;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  text-align: center;
+
+  &-title {
+    font-size: clamp(0.875rem, 4vw, 1.75rem);
+    font-weight: map-get(fonts.$font-weight, medium);
+    color: var.$secondary-color;
+
+    &.success {
+      margin-top: 1.5rem;
+      color: var.$success-color;
+
+      &::before {
+        content: "\2713";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin: 1rem auto;
+        font-size: 1.55rem;
+        background-color: var.$success-color;
+        color: var.$card-color;
+        border-radius: 50%;
+      }
+    }
+
+    &.failed {
+      margin-top: 1.5rem;
+      color: var.$failed-color;
+
+      &::before {
+        content: "X";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin: 1rem auto;
+        font-size: 1.55rem;
+        background-color: var.$failed-color;
+        color: var.$card-color;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &-subtitle {
+    font-size: clamp(0.75rem, 4vw, 1.125rem);
+    font-weight: map-get(fonts.$font-weight, regular);
+    color: var.$accent-color;
+  }
+
+  &-info {
+    font-size: clamp(0.688rem, 4vw, 0.938rem);
+    font-weight: map-get(fonts.$font-weight, regular);
+    color: var.$accent-color;
+
+    & span {
+      color: var.$primary-color;
+    }
+  }
+}
