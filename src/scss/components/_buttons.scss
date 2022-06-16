@@ -17,6 +17,7 @@
     color: var.$text-color-light;
     border-radius: 5px;
     cursor: pointer;
+    transition: transform 0.5s ease-out;
   }
 
   &-outline-primary {
@@ -28,5 +29,17 @@
     color: var.$primary-color;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.5s ease-in;
+  }
+}
+
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-7px);
+  }
+
+  .btn-outline-primary:hover {
+    background-color: var.$primary-color;
+    color: var.$text-color-light;
   }
 }
