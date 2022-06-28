@@ -20,6 +20,11 @@
     transition: transform 0.5s ease-out;
   }
 
+  &-success {
+    @extend .btn-primary;
+    background-color: var.$success-color;
+  }
+
   &-outline-primary {
     width: 100%;
     padding: 0.5em 1em;

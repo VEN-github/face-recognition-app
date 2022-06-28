@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <!-- general meta tags -->
     <meta charset="UTF-8" />
@@ -17,6 +17,18 @@
       content="Simple face recognition application with QR code generator and scanner."
     />
     <meta name="author" content="Raven Barrogo" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://simple-face-recognition-app.netlify.app/"
+    />
+    <meta property="og:title" content="Face Recognition App" />
+    <meta
+      property="og:description"
+      content="Simple face recognition application with QR code generator and scanner."
+    />
+    <meta property="og:image" content="assets/img/illustration-home.svg" />
     <!-- Standard favicon -->
     <link
       rel="shortcut icon"
@@ -36,18 +48,18 @@
         src="assets/img/logo.svg"
         alt="Logo of the Application"
       />
-      <div class="card">
+      <div class="card" data-result="success" hidden>
         <div class="card-title success">Successful!</div>
         <div class="card-subtitle mb-1">Scan completed successfully</div>
         <div class="card-body">
-          <img src="assets/img/sample.jpg" alt="" class="avatar" />
+          <img class="avatar" src="" alt="" />
           <p class="mb-2">Name Here</p>
           <div>
             <button type="button" class="btn btn-primary">Close</button>
           </div>
         </div>
       </div>
-      <div class="card">
+      <div class="card" data-result="failed" hidden>
         <div class="card-title failed">Failed!</div>
         <div class="card-subtitle mb-1">No match found in the scan</div>
         <div class="card-body">
@@ -62,5 +74,6 @@
         </div>
       </div>
     </main>
+    <script defer type="module" src="assets/js/main.min.js"></script>
   </body>
 </html>

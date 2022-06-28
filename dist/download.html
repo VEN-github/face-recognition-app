@@ -41,32 +41,27 @@
         src="assets/img/logo.svg"
         alt="Logo of the Application"
       />
-      <div class="card" data-result="success" hidden>
-        <div class="card-title success">Successful!</div>
-        <div class="card-subtitle mb-1">Scan completed successfully</div>
-        <div class="card-body">
-          <img class="avatar" src="" alt="" />
-          <p class="mb-2">Name Here</p>
-          <div>
-            <button type="button" class="btn btn-primary">Close</button>
-          </div>
+      <div class="card">
+        <div class="card-title">Here's your QR Code</div>
+        <div class="card-subtitle mb-1">
+          Please download your QR Code to proceed
         </div>
-      </div>
-      <div class="card" data-result="failed" hidden>
-        <div class="card-title failed">Failed!</div>
-        <div class="card-subtitle mb-1">No match found in the scan</div>
-        <div class="card-body">
-          <img
-            class="illustration mb-2"
-            src="assets/img/illustration-failed.svg"
-            alt="Illustration for failed scan"
-          />
-          <div>
-            <button type="button" class="btn btn-primary">Close</button>
-          </div>
+        <div id="qr-code-wrapper" class="card-body">
+          <div id="qrcode" class="mb-1 qr-code"></div>
+          <p id="qr-name" class="mb-1 qr-name"></p>
+          <button
+            type="button"
+            id="download-qr"
+            class="btn btn-primary"
+            data-html2canvas-ignore
+          >
+            Download QR Code
+          </button>
         </div>
       </div>
     </main>
+    <script defer src="assets/js/qrcode.min.js"></script>
+    <script defer src="assets/js/html2canvas.min.js"></script>
     <script defer type="module" src="assets/js/main.min.js"></script>
   </body>
 </html>

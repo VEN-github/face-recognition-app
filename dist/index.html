@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -14,6 +14,17 @@
       content="Simple face recognition application with QR code generator and scanner."
     />
     <meta name="author" content="Raven Barrogo" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://simple-face-recognition-app.netlify.app/"
+    />
+    <meta property="og:title" content="Face Recognition App" />
+    <meta
+      property="og:description"
+      content="Simple face recognition application with QR code generator and scanner."
+    />
+    <meta property="og:image" content="assets/img/illustration-home.svg" />
     <link
       rel="shortcut icon"
       href="assets/img/favicon.ico"
@@ -35,13 +46,27 @@
         <div class="card-subtitle mb-1">Please scan your QR Code</div>
         <div class="card-body">
           <img
+            id="illustration"
             class="illustration mb-2"
             src="assets/img/illustration-home.svg"
             alt="Illustration for Home Page"
           />
+          <video id="qr-video" class="fluid" width="500" hidden></video>
           <div>
-            <button type="button" class="btn btn-primary mb-1">
+            <button
+              type="button"
+              id="open-scanner"
+              class="btn btn-primary mb-1"
+            >
               Scan my QR Code
+            </button>
+            <button
+              type="button"
+              id="close-scanner"
+              class="btn btn-outline-primary mb-1"
+              hidden
+            >
+              Cancel
             </button>
           </div>
           <p class="card-info">
@@ -51,5 +76,6 @@
         </div>
       </div>
     </main>
+    <script defer type="module" src="assets/js/main.min.js"></script>
   </body>
 </html>

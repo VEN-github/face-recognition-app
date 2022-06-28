@@ -65,6 +65,36 @@
     color: var.$accent-color;
   }
 
+  & .user-details {
+    text-align: start;
+
+    & p {
+      font-size: clamp(0.75rem, 4vw, 1.125rem);
+      font-weight: map-get(fonts.$font-weight, regular);
+      color: var.$accent-color;
+
+      & span {
+        color: var.$secondary-color;
+      }
+    }
+  }
+
+  & .camera video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  & .qr-code img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  & .qr-name {
+    @extend .card-title;
+    font-size: clamp(0.875rem, 6vw, 1.75rem);
+  }
+
   &-info {
     font-size: clamp(0.688rem, 4vw, 0.938rem);
     font-weight: map-get(fonts.$font-weight, regular);
@@ -73,5 +103,20 @@
     & span {
       color: var.$primary-color;
     }
+  }
+
+  &.active {
+    animation: fade-in-right 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  }
+}
+
+@keyframes fade-in-right {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
 }

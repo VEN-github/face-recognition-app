@@ -40,7 +40,7 @@
       background-color: var.$accent-color;
     }
 
-    &.active {
+    &.step.active {
       color: var.$primary-color;
 
       &::before {
