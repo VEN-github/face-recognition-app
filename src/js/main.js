@@ -6,6 +6,7 @@ import {
   child,
   get,
 } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-database.js";
+import Webcam from "./webcam-easy.min.js";
 import QrScanner from "./qr-scanner.min.js";
 
 const form = document.querySelector("#registerForm");
@@ -19,6 +20,12 @@ const backBtnIdentity = document.querySelector("#back-identity");
 const submitBtn = document.querySelector("#submit-btn");
 const openScan = document.querySelector("#open-scanner");
 const closeScan = document.querySelector("#close-scanner");
+const webcamElement = document.querySelector("#webcam");
+const canvasElement = document.querySelector("#canvas");
+let webcam;
+if (webcamElement && canvasElement)
+  webcam = new Webcam(webcamElement, "user", canvasElement);
+
 let active = 1;
 
 // file paths
@@ -113,18 +120,37 @@ const updateProgress = () => {
 
 // open webcam
 const openWebcam = () => {
-  Webcam.set({
-    width: 320,
-    height: 240,
-    image_format: "jpeg",
-    jpeg_quality: 90,
-    flip_horiz: true,
-  });
-  Webcam.attach("#camera");
+  webcam
+    .start()
+    .then((result) => {
+      console.log(result, "webcam started");
+      webcamElement.hidden = false;
+      snapShot.hidden = false;
+    })
+    .catch((err) => {
+      console.error(err);
+      Toastify({
+        text: "Permission denied. Allow me to use your camera.",
+        duration: 3000,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        backgroundColor: "#d33329",
+      }).showToast();
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    });
 };
 
 // off webcam
-const offWebcam = () => Webcam.reset();
+const offWebcam = () => {
+  webcam.stop();
+  webcamElement.hidden = true;
+  canvasElement.hidden = true;
+  snapShot.hidden = true;
+};
 
 // qr code scanner instance
 const scanQr = () => {
@@ -265,36 +291,34 @@ if (form) {
   });
 
   if (snapShot) {
-    Webcam.on("live", () => {
-      snapShot.addEventListener("click", () => {
-        Webcam.freeze();
-        snapShot.hidden = true;
-        backBtnInformation.hidden = true;
-        savePhoto.hidden = false;
-        retakePhoto.hidden = false;
-      });
+    snapShot.addEventListener("click", () => {
+      let picture = webcam.snap();
+      webcamElement.hidden = true;
+      snapShot.hidden = true;
+      backBtnInformation.hidden = true;
+      canvasElement.hidden = false;
+      savePhoto.hidden = false;
+      retakePhoto.hidden = false;
+      const userInfo = new ProfileImage(
+        Storage.getRegisteredUser().userID,
+        Storage.getRegisteredUser().firstName,
+        Storage.getRegisteredUser().lastName,
+        Storage.getRegisteredUser().email,
+        picture
+      );
+      Storage.setRegisteredUser(userInfo);
     });
   }
 
   if (savePhoto) {
     savePhoto.addEventListener("click", () => {
-      Webcam.snap((data_uri) => {
-        const userInfo = new ProfileImage(
-          Storage.getRegisteredUser().userID,
-          Storage.getRegisteredUser().firstName,
-          Storage.getRegisteredUser().lastName,
-          Storage.getRegisteredUser().email,
-          data_uri
-        );
-        Storage.setRegisteredUser(userInfo);
-        document.querySelector("#avatar").src = data_uri;
-        document.querySelector("#first-name").innerHTML =
-          Storage.getRegisteredUser().firstName;
-        document.querySelector("#last-name").innerHTML =
-          Storage.getRegisteredUser().lastName;
-        document.querySelector("#email-add").innerHTML =
-          Storage.getRegisteredUser().email;
-      });
+      document.querySelector("#avatar").src = Storage.getRegisteredUser().image;
+      document.querySelector("#first-name").innerHTML =
+        Storage.getRegisteredUser().firstName;
+      document.querySelector("#last-name").innerHTML =
+        Storage.getRegisteredUser().lastName;
+      document.querySelector("#email-add").innerHTML =
+        Storage.getRegisteredUser().email;
       offWebcam();
       nextStep();
     });
@@ -302,9 +326,10 @@ if (form) {
 
   if (retakePhoto) {
     retakePhoto.addEventListener("click", () => {
-      Webcam.unfreeze();
+      canvasElement.hidden = true;
       savePhoto.hidden = true;
       retakePhoto.hidden = true;
+      webcamElement.hidden = false;
       snapShot.hidden = false;
       backBtnInformation.hidden = false;
     });
@@ -312,11 +337,11 @@ if (form) {
 
   if (backBtnInformation) {
     backBtnInformation.addEventListener("click", () => {
+      offWebcam();
       firstName.value = Storage.getRegisteredUser().firstName;
       lastName.value = Storage.getRegisteredUser().lastName;
       email.value = Storage.getRegisteredUser().email;
       prevStep();
-      offWebcam();
     });
   }
 
@@ -326,7 +351,6 @@ if (form) {
       openWebcam();
       savePhoto.hidden = true;
       retakePhoto.hidden = true;
-      snapShot.hidden = false;
       backBtnInformation.hidden = false;
     });
   }

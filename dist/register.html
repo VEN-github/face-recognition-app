@@ -24,7 +24,7 @@
       property="og:description"
       content="Simple face recognition application with QR code generator and scanner."
     />
-    <meta property="og:image" content="assets/img/illustration-home.svg" />
+    <meta property="og:image" content="assets/img/illustration-home.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <link
@@ -34,6 +34,11 @@
     />
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/png" />
     <link rel="stylesheet" href="assets/css/main.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <title>Face Recognition App</title>
   </head>
   <body>
@@ -95,12 +100,22 @@
         <div class="card-title">Identity Verification</div>
         <div class="card-subtitle mb-2">Please take a photo</div>
         <div class="card-body">
-          <div id="camera" class="camera mb-1"></div>
+          <video
+            id="webcam"
+            class="fluid mb-1"
+            autoplay
+            playsinline
+            width="640"
+            height="480"
+            hidden
+          ></video>
+          <canvas id="canvas" class="fluid mb-1" hidden></canvas>
           <div>
             <button
               type="button"
               id="take-snapshot"
               class="btn btn-primary mb-1"
+              hidden
             >
               Take a Photo
             </button>
@@ -157,7 +172,11 @@
         </div>
       </div>
     </main>
-    <script defer src="assets/js/webcam.min.js"></script>
+    <script
+      defer
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script defer type="module" src="assets/js/main.min.js"></script>
   </body>
 </html>
