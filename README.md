@@ -1,4 +1,4 @@
-# Personal Portfolio
+# Face Recognition Application
 
 Simple face recognition application with QR code generator and scanner.
 
