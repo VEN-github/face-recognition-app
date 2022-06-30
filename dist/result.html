@@ -47,10 +47,12 @@
         <div class="card-title success">Successful!</div>
         <div class="card-subtitle mb-1">Scan completed successfully</div>
         <div class="card-body">
-          <img class="avatar" src="" alt="" />
-          <p class="mb-2">Name Here</p>
+          <img id="output-img" class="avatar" alt="Display Image" />
+          <p id="output-name" class="qr-name mb-2"></p>
           <div>
-            <button type="button" class="btn btn-primary">Close</button>
+            <button type="button" class="btn btn-primary close-result">
+              Close
+            </button>
           </div>
         </div>
       </div>
@@ -64,7 +66,9 @@
             alt="Illustration for failed scan"
           />
           <div>
-            <button type="button" class="btn btn-primary">Close</button>
+            <button type="button" class="btn btn-primary close-result">
+              Close
+            </button>
           </div>
         </div>
       </div>

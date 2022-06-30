@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="face recognition app, qr code scanner, qr code generator"
+    />
+    <meta name="title" content="Face Recognition App" />
+    <meta
+      name="description"
+      content="Simple face recognition application with QR code generator and scanner."
+    />
+    <meta name="author" content="Raven Barrogo" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://simple-face-recognition-app.netlify.app/"
+    />
+    <meta property="og:title" content="Face Recognition App" />
+    <meta
+      property="og:description"
+      content="Simple face recognition application with QR code generator and scanner."
+    />
+    <meta property="og:image" content="assets/img/illustration-home.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <link
+      rel="shortcut icon"
+      href="assets/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="assets/css/main.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <title>Face Recognition App</title>
+  </head>
+  <body>
+    <div class="loading-screen">
+      <div class="line-of-dots"></div>
+    </div>
+    <main>
+      <img
+        class="logo mx-auto mb-2"
+        src="assets/img/logo.svg"
+        alt="Logo of the Application"
+      />
+      <div class="card">
+        <div class="card-title">Face Recognition</div>
+        <div class="card-subtitle mb-1">Please scan your face</div>
+        <div class="card-body">
+          <div class="overlay-timer mb-1">
+            <p id="count" class="count">5</p>
+            <video
+              id="webcam"
+              class="fluid"
+              autoplay
+              playsinline
+              width="640"
+              height="480"
+            ></video>
+          </div>
+          <canvas id="canvas" class="fluid" hidden></canvas>
+          <div>
+            <button
+              type="button"
+              class="btn btn-outline-primary mb-1 close-result"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script
+      defer
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script
+      defer
+      type="text/javascript"
+      src="assets/js/face-api.min.js"
+    ></script>
+    <script defer type="module" src="assets/js/main.min.js"></script>
+  </body>
+</html>

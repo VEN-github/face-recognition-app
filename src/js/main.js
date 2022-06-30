@@ -20,12 +20,13 @@ const backBtnIdentity = document.querySelector("#back-identity");
 const submitBtn = document.querySelector("#submit-btn");
 const openScan = document.querySelector("#open-scanner");
 const closeScan = document.querySelector("#close-scanner");
+const closeResult = document.querySelectorAll(".close-result");
+const fileSelector = document.querySelector("#upload-qr");
 const webcamElement = document.querySelector("#webcam");
 const canvasElement = document.querySelector("#canvas");
 let webcam;
 if (webcamElement && canvasElement)
   webcam = new Webcam(webcamElement, "user", canvasElement);
-
 let active = 1;
 
 // file paths
@@ -33,9 +34,10 @@ const paths = {
   index: "index.html",
   register: "register.html",
   download: "download.html",
+  recognition: "recognition.html",
   result: "result.html",
 };
-const { index, register, download, result } = paths; // destructuring
+const { index, register, download, recognition, result } = paths; // destructuring
 
 // idle timer
 const idle = () => {
@@ -125,7 +127,7 @@ const openWebcam = () => {
     .then((result) => {
       console.log(result, "webcam started");
       webcamElement.hidden = false;
-      snapShot.hidden = false;
+      if (snapShot) snapShot.hidden = false;
     })
     .catch((err) => {
       console.error(err);
@@ -159,7 +161,12 @@ const scanQr = () => {
 
   const qrScanner = new QrScanner(
     video,
-    (result) => ProfileImage.readUser(result.data),
+    (result) => {
+      document.querySelector(".loading-screen").hidden = false;
+      qrScanner.destroy();
+      video.hidden = true;
+      ProfileImage.readUser(result.data);
+    },
     {
       highlightScanRegion: true,
       highlightCodeOutline: true,
@@ -167,6 +174,109 @@ const scanQr = () => {
   );
 
   return qrScanner;
+};
+
+// face api models
+const models = () => {
+  Promise.all([
+    faceapi.nets.faceLandmark68Net.loadFromUri("models"),
+    faceapi.nets.faceRecognitionNet.loadFromUri("models"),
+    faceapi.nets.ssdMobilenetv1.loadFromUri("models"),
+  ]).then(start);
+};
+
+// start face recognition
+const start = async () => {
+  const labeledFaceDescriptors = await loadImage();
+  if (labeledFaceDescriptors) {
+    const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5);
+    document.querySelector(".loading-screen").hidden = true;
+    openWebcam();
+
+    let ctr = 5;
+    setInterval(async () => {
+      ctr--;
+      if (ctr >= 1) document.querySelector("#count").innerHTML = ctr;
+      if (ctr === 0) {
+        document
+          .querySelector(".overlay-timer")
+          .style.setProperty("--bg-color", "transparent");
+        document.querySelector("#count").hidden = true;
+        webcam.snap();
+
+        const detection = await faceapi
+          .detectSingleFace(canvasElement)
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+
+        if (detection) {
+          const displaySize = {
+            width: canvasElement.width,
+            height: canvasElement.height,
+          };
+          const resizedDetection = faceapi.resizeResults(
+            detection,
+            displaySize
+          );
+          const results = faceMatcher.findBestMatch(
+            resizedDetection.descriptor
+          );
+          const output = {
+            result: results.label,
+            image: Storage.getResult().image,
+          };
+
+          Storage.setResult(output);
+          window.location.href = result;
+        } else {
+          webcam.stop();
+          Toastify({
+            text: "No faces detected.",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            backgroundColor: "#d33329",
+          }).showToast();
+          setTimeout(() => {
+            Storage.removeResult();
+            window.location.href = index;
+          }, 3000);
+        }
+      }
+    }, 1000);
+  }
+};
+
+// load all images for face recognition
+const loadImage = async () => {
+  const img = await faceapi.fetchImage(Storage.getResult().image);
+  const detections = await faceapi
+    .detectSingleFace(img)
+    .withFaceLandmarks()
+    .withFaceDescriptor();
+  if (!detections) {
+    Toastify({
+      text: "No faces detected.",
+      duration: 3000,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "center", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      backgroundColor: "#d33329",
+    }).showToast();
+    setTimeout(() => {
+      Storage.removeResult();
+      window.location.href = index;
+    }, 3000);
+  } else {
+    const descriptions = [detections.descriptor];
+    return new faceapi.LabeledFaceDescriptors(
+      `${Storage.getResult().firstName} ${Storage.getResult().lastName}`,
+      descriptions
+    );
+  }
 };
 
 // user information
@@ -209,10 +319,22 @@ class ProfileImage extends User {
         if (snapshot.exists()) {
           const data = snapshot.val();
           Storage.setResult(data);
+          window.location.href = recognition;
         } else {
-          const data = snapshot.val();
-          Storage.setResult(data);
-          window.location.href = result;
+          document.querySelector(".loading-screen").hidden = true;
+          Toastify({
+            text: "No Match Found.",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            backgroundColor: "#d33329",
+          }).showToast();
+          document.querySelector("#illustration").hidden = false;
+          openScan.hidden = false;
+          document.querySelector("#upload-qr-btn").style.display = "block";
+          closeScan.hidden = true;
         }
       })
       .catch((err) => console.error(err));
@@ -249,7 +371,19 @@ class Storage {
   static getResult() {
     const result = JSON.parse(localStorage.getItem("result"));
 
-    return result;
+    if (result !== null) return result;
+  }
+
+  // check local storage if there is scanned result
+  static checkResult() {
+    const result = JSON.parse(localStorage.getItem("result"));
+
+    if (result === null) window.location.href = index;
+  }
+
+  // remove the scanned result in local storage
+  static removeResult() {
+    localStorage.removeItem("result");
   }
 }
 
@@ -357,6 +491,7 @@ if (form) {
 
   if (submitBtn) {
     submitBtn.addEventListener("click", () => {
+      document.querySelector(".loading-screen").hidden = false;
       const userInfo = new ProfileImage(
         Storage.getRegisteredUser().userID,
         Storage.getRegisteredUser().firstName,
@@ -374,9 +509,33 @@ if (openScan) {
   openScan.addEventListener("click", () => {
     document.querySelector("#illustration").hidden = true;
     openScan.hidden = true;
+    document.querySelector("#upload-qr-btn").style.display = "none";
     closeScan.hidden = false;
     scanQr().start();
     idle();
+  });
+}
+
+// scan uploaded qr code
+if (fileSelector) {
+  fileSelector.addEventListener("change", () => {
+    const file = fileSelector.files[0];
+    if (!file) {
+      return;
+    }
+    QrScanner.scanImage(file, { returnDetailedScanResult: true })
+      .then((result) => ProfileImage.readUser(result.data))
+      .catch((e) => {
+        Toastify({
+          text: e,
+          duration: 3000,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "center", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          backgroundColor: "#d33329",
+        }).showToast();
+      });
   });
 }
 
@@ -384,10 +543,23 @@ if (openScan) {
 if (closeScan)
   closeScan.addEventListener("click", () => window.location.reload());
 
+// close face scan
+if (closeResult) {
+  closeResult.forEach((close) => {
+    close.addEventListener("click", () => {
+      Storage.removeResult();
+      window.location.href = index;
+    });
+  });
+}
+
 // set and download qr code
 if (window.location.pathname === `/${download}`) {
   Storage.checkRegisteredUser();
   generateQRCode();
+  setTimeout(() => {
+    document.querySelector(".loading-screen").hidden = true;
+  }, 2000);
 
   const downloadQR = document.querySelector("#download-qr");
 
@@ -414,11 +586,21 @@ if (window.location.pathname === `/${download}`) {
   });
 }
 
-// scanned result
+// location of  face scanner
+if (window.location.pathname === `/${recognition}`) {
+  Storage.checkResult();
+  models();
+}
+
+// result of face scanner
 if (window.location.pathname === `/${result}`) {
-  if (Storage.getResult() === null) {
+  Storage.checkResult();
+  if (Storage.getResult().result === "unknown") {
     document.querySelector('[data-result="failed"]').hidden = false;
   } else {
+    document.querySelector("#output-img").src = Storage.getResult().image;
+    document.querySelector("#output-name").innerHTML =
+      Storage.getResult().result;
     document.querySelector('[data-result="success"]').hidden = false;
   }
 }

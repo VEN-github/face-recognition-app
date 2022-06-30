@@ -41,9 +41,17 @@
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/png" />
     <!-- css -->
     <link rel="stylesheet" href="assets/css/main.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <title>Face Recognition App</title>
   </head>
   <body>
+    <div class="loading-screen" hidden>
+      <div class="line-of-dots"></div>
+    </div>
     <main>
       <img
         class="logo mx-auto mb-2"
@@ -60,15 +68,30 @@
             src="assets/img/illustration-home.svg"
             alt="Illustration for Home Page"
           />
-          <video id="qr-video" class="fluid" width="500" hidden></video>
+          <video
+            id="qr-video"
+            class="fluid mb-1"
+            width="640"
+            height="480"
+            playsinline
+            hidden
+          ></video>
           <div>
             <button
               type="button"
               id="open-scanner"
               class="btn btn-primary mb-1"
             >
-              Scan my QR Code
+              Open QR Code Scanner
             </button>
+            <label
+              id="upload-qr-btn"
+              for="upload-qr"
+              class="btn btn-outline-primary mb-1"
+              style="display: block"
+              >Scan from file</label
+            >
+            <input type="file" id="upload-qr" hidden />
             <button
               type="button"
               id="close-scanner"
@@ -85,6 +108,11 @@
         </div>
       </div>
     </main>
+    <script
+      defer
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script defer type="module" src="assets/js/main.min.js"></script>
   </body>
 </html>
