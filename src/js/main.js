@@ -231,7 +231,7 @@ const start = async () => {
         } else {
           webcam.stop();
           Toastify({
-            text: "No faces detected.",
+            text: "No faces detected. Please try again.",
             duration: 3000,
             close: true,
             gravity: "top", // `top` or `bottom`
@@ -258,7 +258,8 @@ const loadImage = async () => {
     .withFaceDescriptor();
   if (!detections) {
     Toastify({
-      text: "No faces detected.",
+      text: `There were no faces in the picture based on the QR code. 
+      You must use the QR code provided.`,
       duration: 3000,
       close: true,
       gravity: "top", // `top` or `bottom`
@@ -527,7 +528,7 @@ if (fileSelector) {
       .then((result) => ProfileImage.readUser(result.data))
       .catch((e) => {
         Toastify({
-          text: e,
+          text: `${e}. Please try again.`,
           duration: 3000,
           close: true,
           gravity: "top", // `top` or `bottom`
