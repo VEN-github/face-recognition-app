@@ -34,7 +34,7 @@ Install dependencies
 Install gulp-cli
 
 ```bash
-  npm gulp-cli
+  npm i -g gulp-cli
 ```
 
 Start the server
