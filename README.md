@@ -8,7 +8,7 @@ Simple face recognition application with QR code generator and scanner.
 
 - Face API Recognition
 - QR Code Scanner
-- QR Generator
+- QR Code Generator
 - Firebase Realtime Database
 
 ## Run Locally
@@ -29,6 +29,11 @@ Install dependencies
 
 ```bash
   npm install
+```
+
+Install gulp-cli
+
+```bash
   npm gulp-cli
 ```
 
